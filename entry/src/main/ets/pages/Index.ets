@@ -1,6 +1,6 @@
 import { HttpRequest } from '../utlis/http';
-import { lunbosRoot, lunbos, fenleis, project, products } from '../pop/pops'
-import { router } from '@kit.ArkUI';
+import { lunbosRoot, lunbos, fenleis, project, products, texts } from '../pop/pops'
+import { promptAction, router, TextModifier } from '@kit.ArkUI';
 
 @Styles
 function Iamges() {
@@ -16,9 +16,10 @@ struct Index {
   @State lunboList: lunbos[] = [] //轮播数据
   @State fenleiList: fenleis[] = [] //分类数据
   @State proRoot: products | undefined = undefined
-  @State textList: project[] = [] //商品数据
+  @State textList: texts[] = [] //商品数据
   @State homes: string = "http://192.168.14.63:1337"
   @State Lists: number[] = [1, 2, 3, 4, 5]
+  @State pages: number = 1
 
   Imagesc() {
     HttpRequest.get('http://192.168.14.63:1337/api/v1/banners')
@@ -40,21 +41,25 @@ struct Index {
       })
   }
 
-  productsList(page: number = 1, per: number = 20) {
-    HttpRequest.get(`http://192.168.14.63:1337/api/v1/products?page=${page}&per=${per}`)
+  productsList(page: number = this.pages, per: number = 20) {
+    return HttpRequest.get(`http://192.168.14.63:1337/api/v1/products?page=${page}&per=${per}`)
       .then(r => {
-        // console.log(JSON.stringify(r))
-        this.proRoot = r.result as products
-        this.textList = this.proRoot.data
-        // this.textList = r.result['data']
-        console.log(JSON.stringify(this.textList))
+        return r.result['data'] as texts[]
       });
   }
 
   aboutToAppear() {
     this.Imagesc()
     this.FenLeis()
-    this.productsList()
+    this.productsList().then(r => {
+      this.textList.push(...r)
+      this.pages++
+      // r.forEach(item=>{
+      //   this.textList.push({
+      //     item.
+      //   })
+      // })
+    })
   }
 
   build() {
@@ -143,6 +148,22 @@ struct Index {
               }
             }, (item: project) => item.id + '')
           }
+          //下拉刷新
+          .onReachEnd(() => {
+            if (this.textList.length > 0) {
+              this.productsList(this.pages)
+                .then(r => {
+                  if (r.length == 0) {
+                    promptAction.showToast({
+                      message: '到底了'
+                    })
+                  }
+                  this.textList.push(...r)
+                  this.pages++
+                })
+
+            }
+          })
           .nestedScroll({
             scrollForward: NestedScrollMode.PARENT_FIRST,
             scrollBackward: NestedScrollMode.SELF_FIRST

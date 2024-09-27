@@ -32,12 +32,6 @@ struct textList {
 
   build() {
     Column() {
-      // Button('返回')
-      //   .onClick(() => {
-      //     router.back();
-      //   })
-      // Text(this.FeilsList?.content)
-
       HPRichText({
         richTextOption: $richTextOption,
         needScroll: true,
