@@ -8,6 +8,11 @@ function Iamges() {
   .height(220)
 }
 
+/**
+ * @param pages 页码
+ * @param keyword 输入框的值
+ *
+ */
 @Entry
 @Component
 struct Index {
@@ -20,6 +25,7 @@ struct Index {
   @State homes: string = "http://192.168.14.63:1337"
   @State Lists: number[] = [1, 2, 3, 4, 5]
   @State pages: number = 1
+  @State keyword: string = ''
 
   Imagesc() {
     HttpRequest.get('http://192.168.14.63:1337/api/v1/banners')
@@ -41,8 +47,8 @@ struct Index {
       })
   }
 
-  productsList(page: number = this.pages, per: number = 20) {
-    return HttpRequest.get(`http://192.168.14.63:1337/api/v1/products?page=${page}&per=${per}`)
+  productsList(page: number = this.pages, per: number = 20, category: string = '') {
+    return HttpRequest.get(`http://192.168.14.63:1337/api/v1/products?page=${page}&per=${per}&name=${encodeURI(category)}`)
       .then(r => {
         return r.result['data'] as texts[]
       });
@@ -51,9 +57,10 @@ struct Index {
   aboutToAppear() {
     this.Imagesc()
     this.FenLeis()
-    this.productsList().then(r => {
+    this.productsList(1, 20, '').then(r => {
       this.textList.push(...r)
       this.pages++
+
       // r.forEach(item=>{
       //   this.textList.push({
       //     item.
@@ -70,6 +77,25 @@ struct Index {
           Search({
             placeholder: '搜索商品',
           })// .searchButton('SEARCH')
+            .onSubmit((v) => {
+              this.keyword = v // 搜索框的值
+              this.pages = 1 //设置页
+              this.textList = [] //重置数据
+              this.productsList(1, 20, v)
+                .then(r => {
+                  r.forEach(item => {
+                    this.textList.push({
+                      id: item.id,
+                      name: item.name,
+                      price: item.price,
+                      category: item.category,
+                      coverImage: item.coverImage,
+                      content: item.content
+                    })
+                  })
+                  // this.pages++
+                })
+            })
             .cancelButton({
               style: CancelButtonStyle.CONSTANT,
               icon: {
@@ -151,7 +177,7 @@ struct Index {
           //下拉刷新
           .onReachEnd(() => {
             if (this.textList.length > 0) {
-              this.productsList(this.pages)
+              this.productsList(this.pages, 20, '')
                 .then(r => {
                   if (r.length == 0) {
                     promptAction.showToast({

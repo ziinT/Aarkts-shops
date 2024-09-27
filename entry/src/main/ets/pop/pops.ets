@@ -39,14 +39,10 @@ export interface products {
 }
 
 export interface texts {
-  createdAt: number
-  updatedAt: number
+  category:string
   id: number
   name: string
   coverImage: string
-  desc: string
   content: string
   price: number
-  onSale: number
-  amount: number
 }
