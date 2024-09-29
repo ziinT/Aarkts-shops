@@ -39,6 +39,13 @@ struct Index {
       })
   }
 
+  product(page: number = this.pages, per: number = 20, category: string = '') {
+    return HttpRequest.get(`http://192.168.14.63:1337/api/v1/products?page=${page}&per=${per}&name=${encodeURI(category)}`)
+      .then(r => {
+        return r.result['data'] as texts[]
+      });
+  }
+
   FenLeis() {
     HttpRequest.get('http://192.168.14.63:1337/api/v1/product_categories')
       .then(r => {
@@ -60,13 +67,18 @@ struct Index {
     this.productsList(1, 20, '').then(r => {
       this.textList.push(...r)
       this.pages++
-
-      // r.forEach(item=>{
-      //   this.textList.push({
-      //     item.
-      //   })
-      // })
     })
+    //主页直接加
+    // this.productsList(1, 20, '').then(r => {
+    //   // this.textList.push(...r)
+    //   // this.pages++
+    //
+    //   // r.forEach(item=>{
+    //   //   this.textList.push({
+    //   //     item.
+    //   //   })
+    //   // })
+    // })
   }
 
   build() {
@@ -76,25 +88,32 @@ struct Index {
         Column() {
           Search({
             placeholder: '搜索商品',
-          })// .searchButton('SEARCH')
+          })
             .onSubmit((v) => {
+              //跳转新页面
               this.keyword = v // 搜索框的值
               this.pages = 1 //设置页
-              this.textList = [] //重置数据
+              // this.textList = [] //重置数据
               this.productsList(1, 20, v)
                 .then(r => {
-                  r.forEach(item => {
-                    this.textList.push({
-                      id: item.id,
-                      name: item.name,
-                      price: item.price,
-                      category: item.category,
-                      coverImage: item.coverImage,
-                      content: item.content
-                    })
-                  })
-                  // this.pages++
+                  router.pushUrl({
+                    url: 'pages/fenlei',
+                    params: r,
+                  }, router.RouterMode.Standard)
                 })
+              //   r.forEach(item => {
+              //     // //页面直接添加
+              //     // this.textList.push({
+              //     //   id: item.id,
+              //     //   name: item.name,
+              //     //   price: item.price,
+              //     //   category: item.category,
+              //     //   coverImage: item.coverImage,
+              //     //   content: item.content
+              //     // })
+              //     //新页面跳转以及传参
+              //     // this.pages++
+              // })
             })
             .cancelButton({
               style: CancelButtonStyle.CONSTANT,
@@ -133,6 +152,7 @@ struct Index {
 
           // .backgroundColor(Color.Red)
 
+          //商品数据
           List() {
             ForEach(this.textList, (item: project) => {
               ListItem() {
