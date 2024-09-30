@@ -94,7 +94,7 @@ struct Index {
               this.keyword = v // 搜索框的值
               this.pages = 1 //设置页
               // this.textList = [] //重置数据
-              this.productsList(1, 20, v)
+              this.productsList(1, 40, v)
                 .then(r => {
                   router.pushUrl({
                     url: 'pages/fenlei',

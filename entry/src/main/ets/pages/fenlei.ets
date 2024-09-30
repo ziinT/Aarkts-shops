@@ -36,6 +36,12 @@ struct Fenlei {
             Column() {
               Image(item.coverImage)
                 .width('80%')
+                .onClick(r => {
+                  router.pushUrl({
+                    url: 'pages/textList',
+                    params: item
+                  }, router.RouterMode.Standard)
+                })
               Text(item.name)
                 .letterSpacing(3)//间距
                 .fontColor('#595959')
@@ -48,8 +54,23 @@ struct Fenlei {
                 .margin({
                   top: 10
                 })
+              Text('￥' + item.price.toString() + '元')
+                .textAlign(TextAlign.Start)
+                .width('100%')
+                .fontColor('#ff6d6d')
+                .fontStyle(FontStyle.Italic)
+                .fontWeight(FontWeight.Bolder)
+                .margin({
+                  top: 20,
+                  left: 36,
+                  bottom: 10
+                })
+                .textAlign(TextAlign.Center)
+                .width('100%')
+
             }
             .width('100%')
+            .justifyContent(FlexAlign.Center)
           }
         }, (item: texts) => item.id + '')
       }
