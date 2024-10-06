@@ -15,7 +15,7 @@ function Iamges() {
  */
 @Entry
 @Component
-struct Index {
+export struct Index {
   @State message: string = 'Hello World';
   @State lubboRoot: lunbosRoot | undefined = undefined
   @State lunboList: lunbos[] = [] //轮播数据

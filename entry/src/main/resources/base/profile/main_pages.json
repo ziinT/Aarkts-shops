@@ -2,6 +2,8 @@
   "src": [
     "pages/Index",
     "pages/textList",
-    "pages/fenlei"
+    "pages/fenlei",
+    "pages/Login",
+    "pages/Fist"
   ]
 }
