@@ -1,9 +1,10 @@
 {
   "src": [
     "pages/Index",
-    "pages/textList",
-    "pages/fenlei",
-    "pages/Login",
-    "pages/Fist"
+    "view/textList",
+    "view/fenlei",
+    "view/Login",
+    "view/Fist",
+    "view/Newview"
   ]
 }

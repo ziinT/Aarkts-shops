@@ -1,3 +1,5 @@
+import { data } from '@kit.TelephonyKit'
+
 export interface lunbosRoot {
   code: number
   data: lunbos[]
@@ -39,10 +41,15 @@ export interface products {
 }
 
 export interface texts {
-  category:string
+  category: string
   id: number
   name: string
   coverImage: string
   content: string
   price: number
+}
+
+export interface  Res{
+  code:String;
+  data:String
 }
