@@ -38,7 +38,7 @@ struct Fenlei {
                 .width('80%')
                 .onClick(r => {
                   router.pushUrl({
-                    url: 'pages/textList',
+                    url: 'view/textList',
                     params: item
                   }, router.RouterMode.Standard)
                 })

@@ -97,7 +97,7 @@ export struct Index {
               this.productsList(1, 40, v)
                 .then(r => {
                   router.pushUrl({
-                    url: 'pages/fenlei',
+                    url: 'view/fenlei',
                     params: r,
                   }, router.RouterMode.Standard)
                 })
@@ -159,9 +159,10 @@ export struct Index {
                 Column() {
                   Image(item.coverImage)
                     .onClick(() => {
+                      console.log('NIH ');
                       router.pushUrl({
-                        url: 'pages/textList',
-                        params: item
+                        url: 'view/textList',
+                        params: item,
                       }, router.RouterMode.Standard)
                     })
                     .width('80%')

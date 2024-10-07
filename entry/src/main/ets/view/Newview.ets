@@ -67,9 +67,12 @@ export struct Newview {
           // })
 
           News(this.userName, this.password).then((r => {
-            if (r['code'] == 1) {
+            if (r['responseCode'] == 200) {
               promptAction.showToast({
                 message: '注册成功',
+              })
+              router.pushUrl({
+                url: 'view/Login'
               })
             } else {
               promptAction.showToast({

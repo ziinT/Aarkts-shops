@@ -3,14 +3,11 @@ import { Res } from '../pop/pops';
 import { HttpRequest } from '../utlis/http';
 
 function Logins(userName: string, password: string) {
-  // return HttpRequest.post(`http://192.168.14.63:1337/api/v1/auth/login`, {
-  //   userName: userName,
-  //   password: password,
-  // })
-  //   .then(r => {
-  //     console.log(JSON.stringify(r))
-  //     return r
-  //   })
+  return HttpRequest.post(`http://192.168.14.63:1337/api/v1/auth/login`, userName, password)
+    .then(r => {
+      console.log(JSON.stringify(r))
+      return r
+    })
 }
 
 @Entry
@@ -42,13 +39,21 @@ export struct Login {
         .type(InputType.Password)
       Button('登录')
         .onClick(() => {
-          // Logins(this.userName, this.password).then(r => {
-          //   if (r['code'] == 1) {
-          //     promptAction.showToast({
-          //       message: '成功'
-          //     })
-          //   }
-          // })
+
+          Logins(this.userName, this.password).then(r => {
+            if (r['responseCode'] == 200) {
+              promptAction.showToast({
+                message: '成功'
+              })
+              router.pushUrl({
+                url:'pages/Index'
+              })
+            }else{
+              promptAction.showToast({
+                message: '失败'
+              })
+            }
+          })
         })
         .buttonStyle(ButtonStyleMode.NORMAL)
         .width('60%')
