@@ -1,5 +1,6 @@
 import { Index } from '../view/Fist';
 import { Login } from '../view/Login';
+import { Myshop } from '../view/Myshop';
 import { Newview } from '../view/Newview';
 
 @Entry
@@ -31,7 +32,7 @@ struct Fist {
       .tabBar('购物车')
 
       TabContent() {
-
+        Myshop()
       }
       .tabBar('我的')
     }
